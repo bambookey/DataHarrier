@@ -6,13 +6,13 @@ import java.util.List;
  * Created by lixiangyu on 2017/7/23.
  */
 public class ResultList {
-    private List<ResultPage> result;
+    private List<Result> result;
 
-    public List<ResultPage> getResult() {
+    public List<Result> getResult() {
         return result;
     }
 
-    public void setResult(List<ResultPage> result) {
+    public void setResult(List<Result> result) {
         this.result = result;
     }
 }

@@ -7,18 +7,10 @@ import java.util.List;
  * Created by lixiangyu on 2017/7/23.
  */
 public class StateBean {
-    private String series;
     private String urlPattern;
     private Integer enterCount = 100;
     private List<PageKvBean> kvs;
 
-    public String getSeries() {
-        return series;
-    }
-
-    public void setSeries(String series) {
-        this.series = series;
-    }
 
     public String getUrlPattern() {
         return urlPattern;

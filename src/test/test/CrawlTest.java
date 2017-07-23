@@ -1,5 +1,11 @@
+package test;
+
+import com.dh.bean.config.CrawlBean;
+import com.dh.bean.config.PageKvBean;
+import com.dh.bean.config.StateBean;
 import com.dh.crawl.Crawler;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +13,10 @@ import java.util.List;
 /**
  * Created by lixiangyu on 2017/7/23.
  */
-public class CrawlTest {
+public class CrawlTest extends BaseTest {
 
+    @Autowired
+    Crawler crawler;
 
     @Test
     public void crawlTest() {
@@ -16,7 +24,6 @@ public class CrawlTest {
 
         StateBean page = new StateBean();
         page.setUrlPattern("https://www.zhihu.com/collection/");
-
 
 
         PageKvBean kvBean = new PageKvBean();
@@ -35,8 +42,8 @@ public class CrawlTest {
         CrawlBean crawlBean = new CrawlBean();
         crawlBean.setSeedUrl("https://www.zhihu.com/collection/25252353");
         crawlBean.setStates(states);
+        crawlBean.setSeries("zhihu_renxing");
 
-        Crawler crawler = new Crawler();
         crawler.setCrawlBean(crawlBean);
         crawler.start();
     }

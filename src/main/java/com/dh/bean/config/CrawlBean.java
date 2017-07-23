@@ -8,6 +8,15 @@ import java.util.List;
 public class CrawlBean {
     private String seedUrl;
     private List<StateBean> states;
+    private String series;
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
 
     public String getSeedUrl() {
         return seedUrl;
