@@ -44,7 +44,6 @@ public class ProxyCrawlTest extends BaseTest {
         proxyPage.setUrlPattern("http://www.kuaidaili.com/free/inha/");
         proxyPage.setArrs(listBeans);
 
-
         List<StateBean> states = new ArrayList<StateBean>();
         states.add(proxyPage);
 
@@ -54,7 +53,6 @@ public class ProxyCrawlTest extends BaseTest {
         crawlBean.setSeries("proxy");
         crawlBean.setUsePersistence(false);
 
-        crawler.setCrawlBean(crawlBean);
-        crawler.start();
+        crawler.start(crawlBean);
     }
 }

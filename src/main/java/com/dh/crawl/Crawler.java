@@ -42,8 +42,7 @@ public class Crawler implements PageProcessor {
 
     private volatile Set<String> visitedLinks = new HashSet<String>();
 
-    private Site site = Site.me().setSleepTime(1000).setUserAgent(
-            "Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
+    private Site site;
 
     @Override
     public void process(Page page) {
@@ -119,19 +118,14 @@ public class Crawler implements PageProcessor {
         page.addTargetRequests(unvisitedLinks);
     }
 
-    public void start() {
-        if (null == crawlBean) {
-            return;
-        }
+    public void start(CrawlBean crawlBean) {
+        this.site = Site.me().setSleepTime(1000).setUserAgent(
+                "Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
         Spider.create(this).addUrl(crawlBean.getSeedUrl()).run();
     }
 
     @Override
     public Site getSite() {
         return site;
-    }
-
-    public void setCrawlBean(CrawlBean crawlBean) {
-        this.crawlBean = crawlBean;
     }
 }

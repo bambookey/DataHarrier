@@ -44,7 +44,6 @@ public class CrawlTest extends BaseTest {
         crawlBean.setStates(states);
         crawlBean.setSeries("zhihu_renxing");
 
-        crawler.setCrawlBean(crawlBean);
-        crawler.start();
+        crawler.start(crawlBean);
     }
 }
