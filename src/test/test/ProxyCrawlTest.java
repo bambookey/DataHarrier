@@ -52,6 +52,7 @@ public class ProxyCrawlTest extends BaseTest {
         crawlBean.setSeedUrl("http://www.kuaidaili.com/free/inha/1/");
         crawlBean.setStates(states);
         crawlBean.setSeries("proxy");
+        crawlBean.setUsePersistence(false);
 
         crawler.setCrawlBean(crawlBean);
         crawler.start();

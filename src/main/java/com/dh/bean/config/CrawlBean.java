@@ -9,6 +9,15 @@ public class CrawlBean {
     private String seedUrl;
     private List<StateBean> states;
     private String series;
+    private boolean usePersistence;
+
+    public boolean isUsePersistence() {
+        return usePersistence;
+    }
+
+    public void setUsePersistence(boolean usePersistence) {
+        this.usePersistence = usePersistence;
+    }
 
     public String getSeries() {
         return series;

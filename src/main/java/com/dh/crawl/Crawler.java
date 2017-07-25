@@ -40,8 +40,6 @@ public class Crawler implements PageProcessor {
 
     private CrawlBean crawlBean;
 
-    private boolean isPersistence = false;
-
     private volatile Set<String> visitedLinks = new HashSet<String>();
 
     private Site site = Site.me().setSleepTime(1000).setUserAgent(
@@ -58,50 +56,56 @@ public class Crawler implements PageProcessor {
 
         List<StateBean> states = crawlBean.getStates();
         for (StateBean state : states) {
-            if (page.getUrl().regex(state.getUrlPattern()).match()) {
-                Map<String, Object> data = new HashMap<String, Object>();
-
-                List<PageKvBean> kvs = state.getKvs();
-                if (null != kvs) {
-                    for (PageKvBean kv : kvs) {
-                        String k = kv.getK();
-                        String v = page.getHtml().xpath(kv.getXpath()).toString();
-                        System.out.println(k + ":" + v);
-                        data.put(k, v);
-                    }
-                }
-
-                List<PageListBean> arrs = state.getArrs();
-                if (null != arrs) {
-                    for (PageListBean arr : arrs) {
-                        List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
-                        List<Selectable> nodes = page.getHtml().xpath(arr.getXpathOuter()).nodes();
-                        for (Selectable node : nodes) {
-                            Map<String, Object> oData = new HashMap<String, Object>();
-                            for (PageKvBean kv : arr.getKvs()) {
-                                String k = kv.getK();
-                                String v = node.xpath(kv.getXpath()).toString();
-                                oData.put(k, v);
-                            }
-                            listData.add(oData);
-                        }
-                        data.put(arr.getName(), listData);
-                    }
-                }
-
-                Result result = new Result();
-                result.setUrl(pageUrl);
-                result.setUpdateTime(new Date());
-                result.setSeries(crawlBean.getSeries());
-                result.setData(data);
-                if (isPersistence) {
-                    resultService.insertResult(result);
-                }
-                System.out.println(JSON.toJSONString(result));
-                break;
+            if (!page.getUrl().regex(state.getUrlPattern()).match()) {
+                continue;
             }
+            Map<String, Object> data = new HashMap<String, Object>();
+
+            // 解析页面KV形式内容
+            List<PageKvBean> kvs = state.getKvs();
+            if (null != kvs) {
+                for (PageKvBean kv : kvs) {
+                    String k = kv.getK();
+                    String v = page.getHtml().xpath(kv.getXpath()).toString();
+                    System.out.println(k + ":" + v);
+                    data.put(k, v);
+                }
+            }
+
+            // 解析页面列表形式内容
+            List<PageListBean> arrs = state.getArrs();
+            if (null != arrs) {
+                for (PageListBean arr : arrs) {
+                    List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
+                    List<Selectable> nodes = page.getHtml().xpath(arr.getXpathOuter()).nodes();
+                    for (Selectable node : nodes) {
+                        Map<String, Object> oData = new HashMap<String, Object>();
+                        for (PageKvBean kv : arr.getKvs()) {
+                            String k = kv.getK();
+                            String v = node.xpath(kv.getXpath()).toString();
+                            oData.put(k, v);
+                        }
+                        listData.add(oData);
+                    }
+                    data.put(arr.getName(), listData);
+                }
+            }
+
+            // 生成抓取页面结果
+            Result result = new Result();
+            result.setUrl(pageUrl);
+            result.setUpdateTime(new Date());
+            result.setSeries(crawlBean.getSeries());
+            result.setData(data);
+            if (crawlBean.isUsePersistence()) {
+                resultService.insertResult(result);
+            }
+            System.out.println(JSON.toJSONString(result));
+            break;
+
         }
 
+        // 提取网页内链
         List<String> links = page.getHtml().xpath("//a").links().all();
         List<String> unvisitedLinks = new ArrayList<String>();
         for (String link : links) {
