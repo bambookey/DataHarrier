@@ -10,6 +10,7 @@ public class StateBean {
     private String urlPattern;
     private Integer enterCount = 100;
     private List<PageKvBean> kvs;
+    private List<PageListBean> arrs;
 
 
     public String getUrlPattern() {
@@ -34,5 +35,13 @@ public class StateBean {
 
     public void setKvs(List<PageKvBean> kvs) {
         this.kvs = kvs;
+    }
+
+    public List<PageListBean> getArrs() {
+        return arrs;
+    }
+
+    public void setArrs(List<PageListBean> arrs) {
+        this.arrs = arrs;
     }
 }

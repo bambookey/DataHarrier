@@ -1,6 +1,8 @@
 package com.dh.bean.config;
 
 /**
+ * 用于解析页面KV形式内容
+ *
  * Created by lixiangyu on 2017/7/23.
  */
 public class PageKvBean {

@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class Result {
     int id;
-    private String data;
+    private Object data;
     private Date updateTime;
     private String url;
     private String series;
@@ -30,11 +30,11 @@ public class Result {
         this.series = series;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

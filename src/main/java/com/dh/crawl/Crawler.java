@@ -1,23 +1,30 @@
 package com.dh.crawl;
 
-import com.alibaba.fastjson.JSON;
-import com.dh.bean.config.CrawlBean;
-import com.dh.bean.config.PageKvBean;
-import com.dh.bean.config.StateBean;
-import com.dh.bean.result.Result;
-import com.dh.service.ResultService;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.dh.bean.config.CrawlBean;
+import com.dh.bean.config.PageKvBean;
+import com.dh.bean.config.PageListBean;
+import com.dh.bean.config.StateBean;
+import com.dh.bean.result.Result;
+import com.dh.service.ResultService;
+
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
-
-import java.util.*;
 
 /**
  * 核心抓取类
@@ -32,6 +39,8 @@ public class Crawler implements PageProcessor {
     ResultService resultService;
 
     private CrawlBean crawlBean;
+
+    private boolean isPersistence = false;
 
     private volatile Set<String> visitedLinks = new HashSet<String>();
 
@@ -50,25 +59,45 @@ public class Crawler implements PageProcessor {
         List<StateBean> states = crawlBean.getStates();
         for (StateBean state : states) {
             if (page.getUrl().regex(state.getUrlPattern()).match()) {
+                Map<String, Object> data = new HashMap<String, Object>();
+
                 List<PageKvBean> kvs = state.getKvs();
-                if (null == kvs) {
-                    continue;
+                if (null != kvs) {
+                    for (PageKvBean kv : kvs) {
+                        String k = kv.getK();
+                        String v = page.getHtml().xpath(kv.getXpath()).toString();
+                        System.out.println(k + ":" + v);
+                        data.put(k, v);
+                    }
                 }
 
-                Map<String, Object> data = new HashMap<String, Object>();
-                for (PageKvBean kv : kvs) {
-                    String k = kv.getK();
-                    String v = page.getHtml().xpath(kv.getXpath()).toString();
-                    System.out.println(k + ":" + v);
-                    data.put(k, v);
+                List<PageListBean> arrs = state.getArrs();
+                if (null != arrs) {
+                    for (PageListBean arr : arrs) {
+                        List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
+                        List<Selectable> nodes = page.getHtml().xpath(arr.getXpathOuter()).nodes();
+                        for (Selectable node : nodes) {
+                            Map<String, Object> oData = new HashMap<String, Object>();
+                            for (PageKvBean kv : arr.getKvs()) {
+                                String k = kv.getK();
+                                String v = node.xpath(kv.getXpath()).toString();
+                                oData.put(k, v);
+                            }
+                            listData.add(oData);
+                        }
+                        data.put(arr.getName(), listData);
+                    }
                 }
 
                 Result result = new Result();
                 result.setUrl(pageUrl);
                 result.setUpdateTime(new Date());
                 result.setSeries(crawlBean.getSeries());
-                result.setData(JSON.toJSONString(data));
-                resultService.insertResult(result);
+                result.setData(data);
+                if (isPersistence) {
+                    resultService.insertResult(result);
+                }
+                System.out.println(JSON.toJSONString(result));
                 break;
             }
         }
