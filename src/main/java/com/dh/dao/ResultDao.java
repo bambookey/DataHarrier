@@ -1,14 +1,14 @@
 package com.dh.dao;
 
-import com.dh.bean.result.Result;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.dh.bean.result.Result;
 
 /**
  * 数据抓取结果类
- *
+ * <p>
  * Created by lixiangyu on 2017/7/23.
  */
 @Repository

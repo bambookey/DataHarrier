@@ -168,16 +168,17 @@
             <artifactId>druid</artifactId>
             <version>1.0.7</version>
         </dependency>
-        <!-- web magic -->
+        <!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-core -->
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-core</artifactId>
-            <version>0.5.3</version>
+            <version>0.7.2</version>
         </dependency>
+
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-extension</artifactId>
-            <version>0.5.3</version>
+            <version>0.7.2</version>
         </dependency>
 
     </dependencies>

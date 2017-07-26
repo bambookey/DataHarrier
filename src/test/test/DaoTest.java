@@ -1,11 +1,11 @@
 package test;
 
-import com.dh.bean.result.Result;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import com.dh.bean.result.Result;
 
 /**
  * Created by lixiangyu on 2017/7/23.

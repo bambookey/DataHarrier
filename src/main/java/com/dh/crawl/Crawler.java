@@ -1,5 +1,7 @@
 package com.dh.crawl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,11 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.dh.bean.config.CrawlBean;
 import com.dh.bean.config.PageKvBean;
 import com.dh.bean.config.PageListBean;
@@ -23,7 +28,10 @@ import com.dh.service.ResultService;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 import us.codecraft.webmagic.selector.Selectable;
 
 /**
@@ -40,7 +48,7 @@ public class Crawler implements PageProcessor {
 
     private CrawlBean crawlBean;
 
-    private volatile Set<String> visitedLinks = new HashSet<String>();
+    private static volatile Set<String> visitedLinks = new HashSet<String>();
 
     private Site site;
 
@@ -96,12 +104,18 @@ public class Crawler implements PageProcessor {
             result.setUpdateTime(new Date());
             result.setSeries(crawlBean.getSeries());
             result.setData(data);
-            if (crawlBean.isUsePersistence()) {
+            if (crawlBean.isUseDbPersistence()) {
                 resultService.insertResult(result);
+            }
+            if (crawlBean.isUseFilePersistence()) {
+                try {
+                    FileUtils.writeStringToFile(new File(crawlBean.getFilePersistencePath()), JSON.toJSONString(result) + "\n", true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             System.out.println(JSON.toJSONString(result));
             break;
-
         }
 
         // 提取网页内链
@@ -119,9 +133,51 @@ public class Crawler implements PageProcessor {
     }
 
     public void start(CrawlBean crawlBean) {
-        this.site = Site.me().setSleepTime(1000).setUserAgent(
-                "Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
+        Site site = Site.me();
+        site.setSleepTime(crawlBean.getPulseMillionSeconds());
+        site.setUserAgent("Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
+        this.site = site;
+        this.crawlBean = crawlBean;
+        // 代理配置
+//        HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
+//        Proxy[] proxies = getProxies();
+//        SimpleProxyProvider proxyProvider = SimpleProxyProvider.from(proxies);
+//        httpClientDownloader.setProxyProvider(proxyProvider);
         Spider.create(this).addUrl(crawlBean.getSeedUrl()).run();
+    }
+
+    /**
+     * 获取代理池
+     *
+     * @return
+     */
+    private Proxy[] getProxies() {
+        List<String> lines = new ArrayList<String>();
+        try {
+            lines = FileUtils.readLines(new File("proxy.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Proxy> proxyList = new ArrayList<Proxy>();
+        for (String line : lines) {
+            Result result = JSON.parseObject(line, Result.class);
+            Object data = result.getData();
+            JSONObject oLineProxies = JSON.parseObject(data.toString());
+            JSONArray proxyArray = JSON.parseArray(oLineProxies.get("proxys").toString());
+            for (Object proxy : proxyArray) {
+                String ip = JSON.parseObject(proxy.toString()).getString("IP");
+                int port = JSON.parseObject(proxy.toString()).getInteger("PORT");
+                Proxy p = new Proxy(ip, port);
+                proxyList.add(p);
+            }
+        }
+        int len = proxyList.size();
+        Proxy[] proxies = new Proxy[len];
+        for (int i = 0; i < len; i++) {
+            proxies[i] = proxyList.get(i);
+        }
+        System.out.println("proxy init finished. size" + proxies.length);
+        return proxies;
     }
 
     @Override

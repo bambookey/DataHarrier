@@ -1,8 +1,6 @@
 package com.dh.bean.result;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lixiangyu on 2017/7/23.

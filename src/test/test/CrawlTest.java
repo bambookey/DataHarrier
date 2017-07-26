@@ -1,14 +1,15 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.dh.bean.config.CrawlBean;
 import com.dh.bean.config.PageKvBean;
 import com.dh.bean.config.StateBean;
 import com.dh.crawl.Crawler;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by lixiangyu on 2017/7/23.
@@ -40,10 +41,10 @@ public class CrawlTest extends BaseTest {
         states.add(content);
 
         CrawlBean crawlBean = new CrawlBean();
+        crawlBean.setPulseMillionSeconds(100);
         crawlBean.setSeedUrl("https://www.zhihu.com/collection/25252353");
         crawlBean.setStates(states);
         crawlBean.setSeries("zhihu_renxing");
-
         crawler.start(crawlBean);
     }
 }

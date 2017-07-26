@@ -1,10 +1,10 @@
-package test;
+package com.dh.server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.dh.bean.config.CrawlBean;
 import com.dh.bean.config.PageKvBean;
@@ -13,15 +13,24 @@ import com.dh.bean.config.StateBean;
 import com.dh.crawl.Crawler;
 
 /**
- * Created by lixiangyu on 2017/7/23.
+ * @author lixiangyu
  */
-public class ProxyCrawlTest extends BaseTest {
+@Service
+public class ProxyPool {
 
     @Autowired
-    Crawler crawler;
+    static Crawler crawler;
 
-    @Test
-    public void crawlTest() {
+    public static void start() {
+        crawler.start(getCrawlBean());
+    }
+
+    /**
+     * 获得代理抓取Bean
+     *
+     * @return
+     */
+    private static CrawlBean getCrawlBean() {
         List<PageKvBean> kvs = new ArrayList<PageKvBean>();
         PageKvBean kv1 = new PageKvBean();
         kv1.setK("IP");
@@ -54,6 +63,6 @@ public class ProxyCrawlTest extends BaseTest {
         crawlBean.setUseDbPersistence(false);
         crawlBean.setUseFilePersistence(true);
         crawlBean.setFilePersistencePath("proxy.txt");
-        crawler.start(crawlBean);
+        return crawlBean;
     }
 }

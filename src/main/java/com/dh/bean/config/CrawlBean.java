@@ -8,15 +8,42 @@ import java.util.List;
 public class CrawlBean {
     private String seedUrl;
     private List<StateBean> states;
-    private String series;
-    private boolean usePersistence;
+    private String series;                      // 系列名称
+    private boolean useDbPersistence = false;   // 使用数据库做持久化
+    private boolean useFilePersistence = false; // 使用文件做持久化
+    private String filePersistencePath;         // 文件保存路径
+    private int pulseMillionSeconds = 1000;   // 抓取时间间隔
 
-    public boolean isUsePersistence() {
-        return usePersistence;
+    public int getPulseMillionSeconds() {
+        return pulseMillionSeconds;
     }
 
-    public void setUsePersistence(boolean usePersistence) {
-        this.usePersistence = usePersistence;
+    public void setPulseMillionSeconds(int pulseMillionSeconds) {
+        this.pulseMillionSeconds = pulseMillionSeconds;
+    }
+
+    public boolean isUseFilePersistence() {
+        return useFilePersistence;
+    }
+
+    public void setUseFilePersistence(boolean useFilePersistence) {
+        this.useFilePersistence = useFilePersistence;
+    }
+
+    public String getFilePersistencePath() {
+        return filePersistencePath;
+    }
+
+    public void setFilePersistencePath(String filePersistencePath) {
+        this.filePersistencePath = filePersistencePath;
+    }
+
+    public boolean isUseDbPersistence() {
+        return useDbPersistence;
+    }
+
+    public void setUseDbPersistence(boolean useDbPersistence) {
+        this.useDbPersistence = useDbPersistence;
     }
 
     public String getSeries() {

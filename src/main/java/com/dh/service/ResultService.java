@@ -1,11 +1,12 @@
 package com.dh.service;
 
-import com.dh.bean.result.Result;
-import com.dh.dao.ResultDao;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.dh.bean.result.Result;
+import com.dh.dao.ResultDao;
 
 /**
  * Created by lixiangyu on 2017/7/23.
@@ -23,7 +24,7 @@ public class ResultService {
      */
     public void insertResult(Result result) {
         List<Result> results = resultDao.selectResultByUrl(result.getUrl());
-        if(results.size() == 0) {
+        if (results.size() == 0) {
             resultDao.insertResult(result);
         } else {
             resultDao.updateResult(result);
