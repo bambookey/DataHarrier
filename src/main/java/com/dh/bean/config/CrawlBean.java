@@ -11,8 +11,27 @@ public class CrawlBean {
     private String series;                      // 系列名称
     private boolean useDbPersistence = false;   // 使用数据库做持久化
     private boolean useFilePersistence = false; // 使用文件做持久化
+    private boolean useProxyPool = false;       // 使用代理池
+    private int threadsCnt = 2;
     private String filePersistencePath;         // 文件保存路径
-    private int pulseMillionSeconds = 1000;   // 抓取时间间隔
+    private int pulseMillionSeconds = 1000;     // 抓取时间间隔
+
+
+    public int getThreadsCnt() {
+        return threadsCnt;
+    }
+
+    public void setThreadsCnt(int threadsCnt) {
+        this.threadsCnt = threadsCnt;
+    }
+
+    public boolean isUseProxyPool() {
+        return useProxyPool;
+    }
+
+    public void setUseProxyPool(boolean useProxyPool) {
+        this.useProxyPool = useProxyPool;
+    }
 
     public int getPulseMillionSeconds() {
         return pulseMillionSeconds;

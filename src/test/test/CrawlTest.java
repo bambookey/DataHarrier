@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dh.bean.config.CrawlBean;
@@ -15,6 +17,7 @@ import com.dh.crawl.Crawler;
  * Created by lixiangyu on 2017/7/23.
  */
 public class CrawlTest extends BaseTest {
+    private static final Logger logger = LoggerFactory.getLogger(CrawlTest.class);
 
     @Autowired
     Crawler crawler;
@@ -22,7 +25,9 @@ public class CrawlTest extends BaseTest {
     @Test
     public void crawlTest() {
 
+        logger.info("xxx");
 
+        logger.info("xxx2");
         StateBean page = new StateBean();
         page.setUrlPattern("https://www.zhihu.com/collection/");
 
@@ -45,6 +50,12 @@ public class CrawlTest extends BaseTest {
         crawlBean.setSeedUrl("https://www.zhihu.com/collection/25252353");
         crawlBean.setStates(states);
         crawlBean.setSeries("zhihu_renxing");
+        crawlBean.setUseProxyPool(true);
         crawler.start(crawlBean);
+    }
+    public static void main(String[]args) {
+        System.out.println("in");
+        logger.info("xxxx");
+        logger.error("xxxx");
     }
 }

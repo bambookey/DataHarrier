@@ -24,6 +24,7 @@ import com.dh.bean.config.PageListBean;
 import com.dh.bean.config.StateBean;
 import com.dh.bean.result.Result;
 import com.dh.service.ResultService;
+import com.dh.util.NetUtil;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -54,6 +55,7 @@ public class Crawler implements PageProcessor {
 
     @Override
     public void process(Page page) {
+
         String pageUrl = page.getUrl().toString();
         if (visitedLinks.contains(pageUrl)) {
             return;
@@ -138,12 +140,17 @@ public class Crawler implements PageProcessor {
         site.setUserAgent("Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
         this.site = site;
         this.crawlBean = crawlBean;
-        // 代理配置
-//        HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
-//        Proxy[] proxies = getProxies();
-//        SimpleProxyProvider proxyProvider = SimpleProxyProvider.from(proxies);
-//        httpClientDownloader.setProxyProvider(proxyProvider);
-        Spider.create(this).addUrl(crawlBean.getSeedUrl()).run();
+
+        Spider spider = Spider.create(this).addUrl(crawlBean.getSeedUrl()).thread(crawlBean.getThreadsCnt());
+        // 使用代理模式
+        if (crawlBean.isUseProxyPool()) {
+            HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
+            Proxy[] proxies = getProxies();
+            SimpleProxyProvider proxyProvider = SimpleProxyProvider.from(proxies);
+            httpClientDownloader.setProxyProvider(proxyProvider);
+            spider.setDownloader(httpClientDownloader);
+        }
+        spider.run();
     }
 
     /**
@@ -159,16 +166,30 @@ public class Crawler implements PageProcessor {
             e.printStackTrace();
         }
         List<Proxy> proxyList = new ArrayList<Proxy>();
+        int crawledHosts = 0;
+        int avaliableHosts = 0;
         for (String line : lines) {
             Result result = JSON.parseObject(line, Result.class);
             Object data = result.getData();
             JSONObject oLineProxies = JSON.parseObject(data.toString());
             JSONArray proxyArray = JSON.parseArray(oLineProxies.get("proxys").toString());
             for (Object proxy : proxyArray) {
+                crawledHosts++;
                 String ip = JSON.parseObject(proxy.toString()).getString("IP");
                 int port = JSON.parseObject(proxy.toString()).getInteger("PORT");
                 Proxy p = new Proxy(ip, port);
-                proxyList.add(p);
+                if (NetUtil.isIpReachable(ip)) {
+                    avaliableHosts++;
+                    System.out.println("load proxies. avaliables:" + avaliableHosts + " crawled:" + crawledHosts);
+                    proxyList.add(p);
+                }
+
+                if(avaliableHosts > 20) {
+                    break;
+                }
+            }
+            if(avaliableHosts > 20) {
+                break;
             }
         }
         int len = proxyList.size();
