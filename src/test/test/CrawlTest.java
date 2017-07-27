@@ -24,10 +24,6 @@ public class CrawlTest extends BaseTest {
 
     @Test
     public void crawlTest() {
-
-        logger.info("xxx");
-
-        logger.info("xxx2");
         StateBean page = new StateBean();
         page.setUrlPattern("https://www.zhihu.com/collection/");
 
@@ -52,10 +48,5 @@ public class CrawlTest extends BaseTest {
         crawlBean.setSeries("zhihu_renxing");
         crawlBean.setUseProxyPool(true);
         crawler.start(crawlBean);
-    }
-    public static void main(String[]args) {
-        System.out.println("in");
-        logger.info("xxxx");
-        logger.error("xxxx");
     }
 }

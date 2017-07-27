@@ -54,6 +54,7 @@ public class ProxyCrawlTest extends BaseTest {
         crawlBean.setUseDbPersistence(false);
         crawlBean.setUseFilePersistence(true);
         crawlBean.setFilePersistencePath("proxy.txt");
+        crawlBean.setUseProxyPool(true);
         crawler.start(crawlBean);
     }
 }
