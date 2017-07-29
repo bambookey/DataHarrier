@@ -25,6 +25,7 @@ import com.dh.bean.config.StateBean;
 import com.dh.bean.result.Result;
 import com.dh.service.ResultService;
 import com.dh.util.NetUtil;
+import com.dh.util.UserAgentUtil;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -137,7 +138,10 @@ public class Crawler implements PageProcessor {
     public void start(CrawlBean crawlBean) {
         Site site = Site.me();
         site.setSleepTime(crawlBean.getPulseMillionSeconds());
-        site.setUserAgent("Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/59.0.3071.115");
+        site.setRetryTimes(3);
+        site.setTimeOut(20000);
+        site.setCharset("UTF-8");
+        site.setUserAgent(UserAgentUtil.radomUserAgent());
         this.site = site;
         this.crawlBean = crawlBean;
 
@@ -178,17 +182,17 @@ public class Crawler implements PageProcessor {
                 String ip = JSON.parseObject(proxy.toString()).getString("IP");
                 int port = JSON.parseObject(proxy.toString()).getInteger("PORT");
                 Proxy p = new Proxy(ip, port);
-                if (NetUtil.isIpReachable(ip)) {
+                if (NetUtil.isIpAvailable(ip, port)) {
                     avaliableHosts++;
-                    System.out.println("load proxies. avaliables:" + avaliableHosts + " crawled:" + crawledHosts);
                     proxyList.add(p);
                 }
+                System.out.println("load proxies. avaliables:" + avaliableHosts + " crawled:" + crawledHosts);
 
-                if(avaliableHosts > 20) {
+                if (avaliableHosts > 20) {
                     break;
                 }
             }
-            if(avaliableHosts > 20) {
+            if (avaliableHosts > 20) {
                 break;
             }
         }
