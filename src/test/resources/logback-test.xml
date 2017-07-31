@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="true">
 
     <!-- PROPERTIES -->
-    <property name="LOG_HOME" value="D:\logs\dh"/>
+    <property name="LOG_HOME" value="D:/logs/dh"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
