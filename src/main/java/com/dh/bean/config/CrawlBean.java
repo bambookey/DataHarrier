@@ -15,7 +15,15 @@ public class CrawlBean {
     private int threadsCnt = 2;
     private String filePersistencePath;         // 文件保存路径
     private int pulseMillionSeconds = 1000;     // 抓取时间间隔
+    private String charset = "UTF-8";           // 解析网页字符集
 
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
 
     public int getThreadsCnt() {
         return threadsCnt;

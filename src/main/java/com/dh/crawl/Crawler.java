@@ -140,8 +140,9 @@ public class Crawler implements PageProcessor {
         site.setSleepTime(crawlBean.getPulseMillionSeconds());
         site.setRetryTimes(3);
         site.setTimeOut(20000);
-        site.setCharset("UTF-8");
+
         site.setUserAgent(UserAgentUtil.radomUserAgent());
+        site.setCharset(crawlBean.getCharset());
         this.site = site;
         this.crawlBean = crawlBean;
 

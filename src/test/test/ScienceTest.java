@@ -1,4 +1,4 @@
-
+package test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,18 +67,21 @@ public class ScienceTest extends BaseTest {
 
     @Test
     public void crawlTest() {
-
         List<StateBean> states = new ArrayList<StateBean>();
         states.add(getHomePage());
-        states.add(getUserListPage());
+        //states.add(getUserListPage());
 
         CrawlBean crawlBean = new CrawlBean();
-        crawlBean.setPulseMillionSeconds(100);
-        crawlBean.setSeedUrl("http://blog.sciencenet.cn/blog.php?mod=member");
+        crawlBean.setPulseMillionSeconds(1000);
+        crawlBean.setThreadsCnt(1);
+        crawlBean.setSeedUrl("http://blog.sciencenet.cn/blog.php?mod=member&type=%CE%A2%C9%FA%CE%EF%D7%CA%D4%B4%D3%EB%B7%D6%C0%E0%D1%A7&realmmedium=%CE%A2%C9%FA%CE%EF%D1%A7&realm=%C9%FA%C3%FC%BF%C6%D1%A7&catid=137");
         crawlBean.setStates(states);
         crawlBean.setSeries("science");
+        crawlBean.setCharset("gbk");
         crawlBean.setUseProxyPool(false);
-        crawlBean.setUseDbPersistence(true);
+        crawlBean.setUseFilePersistence(true);
+        crawlBean.setFilePersistencePath("E:/file.txt");
+        crawlBean.setUseDbPersistence(false);
         crawler.start(crawlBean);
     }
 }
