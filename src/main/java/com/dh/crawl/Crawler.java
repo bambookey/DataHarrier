@@ -34,6 +34,7 @@ import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.proxy.Proxy;
 import us.codecraft.webmagic.proxy.SimpleProxyProvider;
+import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 /**
@@ -56,8 +57,8 @@ public class Crawler implements PageProcessor {
 
     @Override
     public void process(Page page) {
-
         String pageUrl = page.getUrl().toString();
+
         if (visitedLinks.contains(pageUrl)) {
             return;
         } else {
@@ -70,7 +71,6 @@ public class Crawler implements PageProcessor {
                 continue;
             }
             Map<String, Object> data = new HashMap<String, Object>();
-
             // 解析页面KV形式内容
             List<PageKvBean> kvs = state.getKvs();
             if (null != kvs) {
