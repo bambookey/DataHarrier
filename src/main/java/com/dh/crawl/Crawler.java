@@ -105,7 +105,7 @@ public class Crawler implements PageProcessor {
             Result result = new Result();
             result.setUrl(pageUrl);
             result.setUpdateTime(new Date());
-            result.setSeries(crawlBean.getSeries());
+            result.setJobName(crawlBean.getJobName());
             result.setData(data);
             if (crawlBean.isUseDbPersistence()) {
                 resultService.insertResult(result);

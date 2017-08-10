@@ -6,13 +6,13 @@ import java.util.List;
  * Created by lixiangyu on 2017/7/23.
  */
 public class CrawlBean {
-    private String seedUrl;
-    private List<StateBean> states;
-    private String series;                      // 系列名称
+    private String seedUrl;                     // 种子链接
+    private List<StateBean> states;             // 抓取规则
+    private String jobName;                     // 任务名称
     private boolean useDbPersistence = false;   // 使用数据库做持久化
     private boolean useFilePersistence = false; // 使用文件做持久化
     private boolean useProxyPool = false;       // 使用代理池
-    private int threadsCnt = 2;
+    private int threadsCnt = 2;                 // 使用线程数量
     private String filePersistencePath;         // 文件保存路径
     private int pulseMillionSeconds = 1000;     // 抓取时间间隔
     private String charset = "UTF-8";           // 解析网页字符集
@@ -73,12 +73,12 @@ public class CrawlBean {
         this.useDbPersistence = useDbPersistence;
     }
 
-    public String getSeries() {
-        return series;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setSeries(String series) {
-        this.series = series;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public String getSeedUrl() {

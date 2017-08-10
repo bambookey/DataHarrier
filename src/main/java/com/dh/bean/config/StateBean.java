@@ -7,10 +7,9 @@ import java.util.List;
  * Created by lixiangyu on 2017/7/23.
  */
 public class StateBean {
-    private String urlPattern;
-    private Integer enterCount = 100;
-    private List<PageKvBean> kvs;
-    private List<PageListBean> arrs;
+    private String urlPattern;          // 页面链接规则
+    private List<PageKvBean> kvs;       // 页面提取kv类型数据的规则
+    private List<PageListBean> arrs;    // 页面提取arrs类型数据的规则
 
 
     public String getUrlPattern() {
@@ -19,14 +18,6 @@ public class StateBean {
 
     public void setUrlPattern(String urlPattern) {
         this.urlPattern = urlPattern;
-    }
-
-    public Integer getEnterCount() {
-        return enterCount;
-    }
-
-    public void setEnterCount(Integer enterCount) {
-        this.enterCount = enterCount;
     }
 
     public List<PageKvBean> getKvs() {

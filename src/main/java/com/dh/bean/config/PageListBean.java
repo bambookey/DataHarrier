@@ -8,9 +8,9 @@ import java.util.List;
  * @author Created by lixiangyu on 2017/7/25.
  */
 public class PageListBean {
-    private String name;
-    private String xpathOuter;
-    private List<PageKvBean> kvs;
+    private String name;            // 列表元素的字段名
+    private String xpathOuter;      // 列表元素的外部xpath
+    private List<PageKvBean> kvs;   // 列表元素
 
     public String getName() {
         return name;

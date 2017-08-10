@@ -45,7 +45,7 @@ public class CrawlTest extends BaseTest {
         crawlBean.setPulseMillionSeconds(100);
         crawlBean.setSeedUrl("https://www.zhihu.com/collection/25252353");
         crawlBean.setStates(states);
-        crawlBean.setSeries("zhihu_renxing");
+        crawlBean.setJobName("zhihu_renxing");
         crawlBean.setUseProxyPool(true);
         crawler.start(crawlBean);
     }

@@ -3,14 +3,16 @@ package com.dh.bean.result;
 import java.util.Date;
 
 /**
+ * 抓取返回结果类
+ *
  * Created by lixiangyu on 2017/7/23.
  */
 public class Result {
-    int id;
-    private Object data;
-    private Date updateTime;
-    private String url;
-    private String series;
+    int id;                     // 主键id
+    private Object data;        // 数据
+    private Date updateTime;    // 更新日期
+    private String url;         // 页面Url
+    private String jobName;     // 任务名称
 
     public int getId() {
         return id;
@@ -20,12 +22,12 @@ public class Result {
         this.id = id;
     }
 
-    public String getSeries() {
-        return series;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setSeries(String series) {
-        this.series = series;
+    public void setJobName(String series) {
+        this.jobName = series;
     }
 
     public Object getData() {
