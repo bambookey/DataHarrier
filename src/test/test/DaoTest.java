@@ -16,7 +16,7 @@ public class DaoTest extends BaseTest {
     public void insertTest() {
         Result result = new Result();
         result.setData("xxx");
-        result.setSeries("series");
+        result.setJobName("series");
         result.setUpdateTime(new Date());
         result.setUrl("ssss");
         resultDao.insertResult(result);

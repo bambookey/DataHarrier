@@ -16,7 +16,7 @@ import com.dh.crawl.Crawler;
 /**
  * Created by lixiangyu on 2017/7/23.
  */
-public class CrawlTest extends BaseTest {
+public class CrawlTest extends test.BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(CrawlTest.class);
 
     @Autowired

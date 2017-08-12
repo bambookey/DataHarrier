@@ -59,7 +59,7 @@ public class ProxyPool {
         CrawlBean crawlBean = new CrawlBean();
         crawlBean.setSeedUrl("http://www.kuaidaili.com/free/inha/1/");
         crawlBean.setStates(states);
-        crawlBean.setSeries("proxy");
+        crawlBean.setJobName("proxy");
         crawlBean.setUseDbPersistence(false);
         crawlBean.setUseFilePersistence(true);
         crawlBean.setFilePersistencePath("proxy.txt");
