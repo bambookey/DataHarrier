@@ -1,5 +1,6 @@
 package com.dh.bean.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ public class StateBean {
     private List<PageKvBean> kvs;       // 页面提取kv类型数据的规则
     private List<PageListBean> arrs;    // 页面提取arrs类型数据的规则
 
+    public StateBean() {
+        kvs = new ArrayList<PageKvBean>();
+        arrs = new ArrayList<PageListBean>();
+    }
 
     public String getUrlPattern() {
         return urlPattern;

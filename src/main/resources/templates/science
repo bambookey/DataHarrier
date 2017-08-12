@@ -1,0 +1,6 @@
+#UserList
+UserList##URL##http://blog.sciencenet.cn/blog.php?mod=member&
+
+#HomePage
+HomePage##URL##http://blog.sciencenet.cn/home.php
+HomePage##KV##name##//div[@id='profile_content']/div[@id='pcd']/div[@class='hm']/h2/a/text()

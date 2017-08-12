@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * UserAgent工具类
+ *
  * @author lixiangyu
  */
 public class UserAgentUtil {
