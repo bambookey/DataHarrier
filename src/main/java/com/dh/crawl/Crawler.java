@@ -55,9 +55,10 @@ public class Crawler implements PageProcessor {
 
     private Site site;
 
+
     @Override
     public void process(Page page) {
-        String pageUrl = page.getUrl().toString();
+        String pageUrl = page.getUrl().toString().split("#")[0];
 
         if (visitedLinks.contains(pageUrl)) {
             return;
@@ -67,9 +68,10 @@ public class Crawler implements PageProcessor {
 
         List<StateBean> states = crawlBean.getStates();
         for (StateBean state : states) {
-            if (!page.getUrl().regex(state.getUrlPattern()).match()) {
+            if (!page.getUrl().toString().startsWith(state.getUrlPattern())) {
                 continue;
             }
+
             Map<String, Object> data = new HashMap<String, Object>();
             // 解析页面KV形式内容
             List<PageKvBean> kvs = state.getKvs();
@@ -106,9 +108,14 @@ public class Crawler implements PageProcessor {
             result.setUrl(pageUrl);
             result.setUpdateTime(new Date());
             result.setJobName(crawlBean.getJobName());
-            result.setData(data);
+            result.setData(JSON.toJSONString(data));
             if (crawlBean.isUseDbPersistence()) {
-                resultService.insertResult(result);
+                try {
+                    resultService.insertResult(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             if (crawlBean.isUseFilePersistence()) {
                 try {

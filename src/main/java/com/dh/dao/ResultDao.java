@@ -15,7 +15,7 @@ import com.dh.bean.result.Result;
 public interface ResultDao {
     public int insertResult(Result result);
 
-    public List<Result> selectResultBySeries(String series);
+    public List<Result> selectResultByJobName(String jobName);
 
     public List<Result> selectResultByUrl(String url);
 

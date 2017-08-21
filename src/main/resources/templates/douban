@@ -1,0 +1,3 @@
+#ListPage
+List##URL##https://www.douban.com/group/topic/80204323/?start=
+List##ARR##replies##//div[@class='article']/ul[@id='comments']/li##pubtime##//span[@class='pubtime']/text()##nickname##//h4/a/text()##content##//div[@class='reply-doc content']/p/text()##user_href##//h4/a/@href##reply_content##//div[@class='reply-quote']/span[@class='short']/text()##reply_user##//span[@class='pubdate']/a/text()##reply_href##//span[@class='pubdate']/a/@href

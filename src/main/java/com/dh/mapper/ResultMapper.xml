@@ -3,20 +3,20 @@
 <mapper namespace="com.dh.dao.ResultDao">
     <resultMap type="com.dh.bean.result.Result" id="Result">
         <result property="id" column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-        <result property="series" column="series"/>
+        <result property="jobName" column="job_name"/>
         <result property="url" column="url"/>
-        <result property="data" column="data"/>
+        <result property="data" column="data" jdbcType="BLOB"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insertResult" parameterType="com.dh.bean.result.Result">
-        INSERT INTO tb_result(id, series, url, data, update_time)
-        VALUES(#{id}, #{series}, #{url}, #{data}, #{updateTime})
+        INSERT INTO tb_result(id, job_name, url, data, update_time)
+        VALUES(#{id}, #{jobName}, #{url}, #{data}, #{updateTime})
     </insert>
 
-    <select id="selectResultBySeries" resultMap="Result">
+    <select id="selectResultByJobName" resultMap="Result">
         SELECT * FROM tb_result
-        WHERE series=#{series}
+        WHERE jobName=#{jobName}
         ORDER BY update_time DESC
     </select>
 
@@ -28,7 +28,7 @@
     <update id="updateResult" parameterType="com.dh.bean.result.Result">
         UPDATE tb_result
         SET data=#{data},update_time=#{updateTime}
-        WHERE series=#{series}
+        WHERE jobName=#{jobName}
         AND url=#{url}
     </update>
 </mapper>
